@@ -19,8 +19,12 @@ if [[ "${target}" == *linux* ]] || [[ "${target}" == *freebsd* ]]; then
     OPENGL_FLAGS="-DOpenGL_GL_PREFERENCE=LEGACY"
 fi
 
-# remove -static linker option from mingw builds, otherwise linker errors with "cannot find -lpng", "cannot find -lfontconfig" 
-atomic_patch -p1 "${WORKSPACE}/srcdir/patches/CMakeLists.txt.patch" 
+# remove -static linker option from mingw builds, otherwise linker errors with "cannot find -lpng", "cannot find -lfontconfig"
+atomic_patch -p1 "${WORKSPACE}/srcdir/patches/CMakeLists.txt.patch"
+
+# fix entity mapping and PLC errors in booleanOperator preserve-numbering
+# (https://gitlab.onelab.info/gmsh/gmsh/-/issues/XXXX)
+atomic_patch -p1 "${WORKSPACE}/srcdir/patches/GModelIO_OCC-fix-preserve-numbering.patch"
 
 mkdir build
 cd build
